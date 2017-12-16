@@ -13,7 +13,7 @@ Private Sub Workbook_Open()
     Debug.Print "vbaDeveloper thisWorkbook_open()"
     ' Set listener = New EventListener
     ' Set customAction = New MyCustomActions
-    menu.createMenu
+    Application.OnTime Now + TimeValue("00:00:01"), "Menu.createMenu"
     ' customAction.afterOpen
 End Sub
 
