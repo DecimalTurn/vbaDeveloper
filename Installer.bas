@@ -28,7 +28,7 @@ Option Explicit
 Sub AutoInstaller()
 
 'Prepare variable
-Dim CurrentWB As Workbook
+Dim CurrentWB As Workbook, NewWB As Workbook
 
 Dim textline As String, strPathOfBuild As String, strLocationXLAM As String
 
@@ -43,6 +43,12 @@ NewWB.VBProject.VBComponents.Import strPathOfBuild
     'Rename the project (in the VBA) to vbaDeveloper
     NewWB.VBProject.Name = "vbaDeveloper"
 
+    'Add references to the library
+        'Microsoft Scripting Runtime
+        NewWB.VBProject.References.AddFromGuid "{420B2830-E718-11CF-893D-00A0C9054228}", 1, 0
+        
+        'Microsoft Visual Basic for Applications Extensibility 5.3
+        NewWB.VBProject.References.AddFromGuid "{0002E157-0000-0000-C000-000000000046}", 5, 3
     
     'In VB Editor, press F4, then under Microsoft Excel Objects, select ThisWorkbook.Set the property 'IsAddin' to TRUE
     NewWB.IsAddin = True
