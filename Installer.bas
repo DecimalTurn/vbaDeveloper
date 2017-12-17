@@ -28,6 +28,23 @@ Public Const addin_name = "vbaDeveloper"
 
 Sub AutoInstaller()
 
+    AutoInstaller_step0
+
+End Sub
+Sub AutoInstaller_step0()
+
+    'Close the vbaDevelopper Workbook if already open and uninstall
+    On Error Resume Next
+    Workbooks(addin_name & ".xlam").Close
+    Application.AddIns2(AddinName2index(addin_name & ".xlam")).Installed = False
+    On Error GoTo 0
+
+    Application.OnTime Now + TimeValue("00:00:06"), "AutoInstaller_step1"
+    
+End Sub
+
+Sub AutoInstaller_step1()
+
 'Prepare variable
 Dim CurrentWB As Workbook, NewWB As Workbook
 
@@ -60,6 +77,64 @@ NewWB.VBProject.VBComponents.Import strPathOfBuild
         
     'Close excel. Open excel with a new workbook, then open the just saved vbaDeveloper.xlam
     NewWB.Close savechanges:=False
-
+    
+    'Add the Add-in (if not already present)
+    If IsAddinInstalled(addin_name) = False Then
+        Call Application.AddIns2.Add(strLocationXLAM & "\" & addin_name & ".xlam", CopyFile:=False)
+    End If
+    
+    'Continue to step 2
+    Application.OnTime Now + TimeValue("00:00:02"), "AutoInstaller_step2"
+    
 End Sub
 
+Sub AutoInstaller_step2()
+
+    'Install the Addin (This should open the file)
+    Application.AddIns2(AddinName2index(addin_name & ".xlam")).Installed = True
+    
+    Application.OnTime Now + TimeValue("00:00:02"), "AutoInstaller_step3"
+    
+End Sub
+
+
+Sub AutoInstaller_step3()
+
+    'Run the Build macro in vbaDeveloper
+    Application.Run "vbaDeveloper.xlam!Build.testImport"
+
+    'Continue to step 4
+    Application.OnTime Now + TimeValue("00:00:06"), "AutoInstaller_step4"
+    
+End Sub
+
+Sub AutoInstaller_step4()
+
+    'Run the Workbook_Open macro from vbaDeveloper
+    Application.Run "vbaDeveloper.xlam!Menu.createMenu"
+    
+    MsgBox addin_name & " was successfully installed."
+    
+End Sub
+
+Function IsAddinInstalled(ByVal addin_name As String) As Boolean
+'PURPOSE: Return true if the Add-in is installed
+    If AddinName2index(addin_name) > 0 Then
+        IsAddinInstalled = True
+    ElseIf AddinName2index(addin_name) = 0 Then
+        IsAddinInstalled = False
+    End If
+End Function
+
+Function AddinName2index(ByVal addin_name As String) As Integer
+'PURPOSE: Convert the name of an installed addin to its index
+    Dim i As Variant
+    For i = 1 To Excel.Application.AddIns2.Count
+        If Excel.Application.AddIns2(i).Name = addin_name Then
+            AddinName2index = i
+            Exit Function
+        End If
+    Next
+    'If we get to this line, it means no match was found
+    AddinName2index = 0
+End Function
