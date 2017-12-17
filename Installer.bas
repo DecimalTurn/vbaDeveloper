@@ -24,6 +24,7 @@ Option Explicit
 
 '6) Make step 3a and 3b again for this file and run the sub testImport located in the module "Build".
 
+Public Const addin_name = "vbaDeveloper"
 
 Sub AutoInstaller()
 
@@ -41,7 +42,7 @@ strPathOfBuild = CurrentWB.Path & "\src\vbaDeveloper.xlam\Build.bas"
 NewWB.VBProject.VBComponents.Import strPathOfBuild
 
     'Rename the project (in the VBA) to vbaDeveloper
-    NewWB.VBProject.Name = "vbaDeveloper"
+    NewWB.VBProject.Name = addin_name
 
     'Add references to the library
         'Microsoft Scripting Runtime
@@ -55,7 +56,7 @@ NewWB.VBProject.VBComponents.Import strPathOfBuild
     'In VB Editor, menu File-->Save Book1; Save as vbaDeveloper.xlam in the same directory as 'src'
 
     strLocationXLAM = CurrentWB.Path
-    NewWB.SaveAs strLocationXLAM & "\vbaDeveloper.xlam", xlOpenXMLAddIn
+    NewWB.SaveAs strLocationXLAM & "\" & addin_name & ".xlam", xlOpenXMLAddIn
         
     'Close excel. Open excel with a new workbook, then open the just saved vbaDeveloper.xlam
     NewWB.Close savechanges:=False
