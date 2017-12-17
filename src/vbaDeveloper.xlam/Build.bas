@@ -35,7 +35,6 @@ Public vbaProjectToImport As VBProject
 
 Public Sub testImport()
     Dim proj_name As String
-<<<<<<< HEAD
     proj_name = "vbaDeveloper"
 
     Dim vbaProject As Object, tempVbaProject As Object
