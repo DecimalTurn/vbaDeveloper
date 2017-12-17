@@ -34,20 +34,48 @@ Public vbaProjectToImport As VBProject
 
 Public Sub testImport()
     Dim proj_name As String
-    proj_name = "VbaDeveloper"
+    proj_name = "vbaDeveloper"
 
-    Dim vbaProject As Object
-    Set vbaProject = Application.VBE.VBProjects(proj_name)
+    Dim vbaProject As Object, tempVbaProject As Object
+    For Each tempVbaProject In Application.VBE.VBProjects
+        If tempVbaProject.name = proj_name Then
+            Set vbaProject = tempVbaProject
+            On Error Resume Next
+            Dim strTest As String
+            strTest = vbaProject.fileName
+            Debug.Print vbaProject.FullName
+            On Error GoTo 0
+            If strTest <> vbNullString Then
+                'This project was already saved once
+                Exit For
+            End If
+        End If
+    Next tempVbaProject
+    
     Build.importVbaCode vbaProject
 End Sub
 
 
 Public Sub testExport()
     Dim proj_name As String
-    proj_name = "VbaDeveloper"
+    proj_name = "vbaDeveloper"
 
-    Dim vbaProject As Object
-    Set vbaProject = Application.VBE.VBProjects(proj_name)
+    Dim vbaProject As Object, tempVbaProject As Object
+    For Each tempVbaProject In Application.VBE.VBProjects
+        If tempVbaProject.name = proj_name Then
+            Set vbaProject = tempVbaProject
+            On Error Resume Next
+            Dim strTest As String
+            strTest = vbaProject.fileName
+            Debug.Print vbaProject.FullName
+            On Error GoTo 0
+            If strTest <> vbNullString Then
+                'This project was already saved once
+                Exit For
+            End If
+        End If
+    Next tempVbaProject
+    
     Build.exportVbaCode vbaProject
 End Sub
 

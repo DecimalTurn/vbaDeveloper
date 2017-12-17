@@ -47,6 +47,7 @@ Public Sub createMenu()
         addMenuItem imSubMenu, imCommand, caption
         addMenuItem formatSubMenu, formatCommand, caption
 nextProject:
+    On Error GoTo -1 'reset the error handling and allow to re-use another "On Error GoTo <label>" statement
     Next vProject
     On Error GoTo 0 'reset the error handling
 
