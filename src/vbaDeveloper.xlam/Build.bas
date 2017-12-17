@@ -11,7 +11,7 @@ Attribute VB_Name = "Build"
 '       File -> Options -> Trust Center, Trust Center Settings, -> Macros,
 '       tick the box: 'Enable programatic access to VBA'  (In excel 2010: 'Trust access to the vba project object model')
 '       If you get 'path not found' exception in Excel 2013, include the following step:
-'           In 'Trust Center' settings, go to 'File Block Settings' and check 'open' and/or 'save' 
+'           In 'Trust Center' settings, go to 'File Block Settings' and check 'open' and/or 'save'
 '           for 'Excel 2007 and later Macro-Enabled Workbooks and Templates'.
 ' 5. If using a non-English version of Excel, rename your current workbook into ThisWorkbook (in VB Editor, press F4,
 '    then under the local name for Microsoft Excel Objects, select the workbook. Set the property '(Name)' to ThisWorkbook)

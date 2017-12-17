@@ -199,7 +199,7 @@ Public Sub formatCode(codePane As codeModule)
     Dim lineCount As Integer
     lineCount = codePane.CountOfLines
 
-    Dim indentLevel As Integer, nextLevel As Integer, levelChange As Integer, isPrevLineContinuated as Boolean
+    Dim indentLevel As Integer, nextLevel As Integer, levelChange As Integer, isPrevLineContinuated As Boolean
     indentLevel = 0
     isPrevLineContinuated = False
     Dim lineNr As Integer
@@ -234,7 +234,7 @@ Public Sub formatCode(codePane As codeModule)
         End If
         If Not isPrevLineContinuated Then
             Call codePane.ReplaceLine(lineNr, line)
-        EndIf
+        End If
         isPrevLineContinuated = isLineContinuated(line)
     Next
     Exit Sub
