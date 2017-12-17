@@ -1,7 +1,7 @@
 Attribute VB_Name = "NamedRanges"
 Option Explicit
 
-Private Const NAMED_RANGES_FILE_NAME As String = "NamedRanges.csv"
+Private Const NAMED_RANGES_FILE_NAME As String = "NamedRanges.txt"
 
 Private Enum columns
     name = 0
@@ -37,8 +37,15 @@ End Sub
 
 
 Private Sub importName(wb As Workbook, line As String)
+    Dim delimiter As String
+    If InStr(line, ";") > 0 Then
+        delimiter = ";"
+    Else
+        delimiter = ","
+    End If
+    
     Dim parts As Variant
-    parts = Split(line, ",")
+    parts = Split(line, delimiter)
     Dim rangeName As String, rangeAddress As String, comment As String
     rangeName = parts(columns.name)
     rangeAddress = parts(columns.RefersTo)
@@ -64,7 +71,7 @@ Public Sub exportNamedRanges(wb As Workbook)
     For Each t In wb.Names
         Set aName = t
         If hasValidRange(aName) Then
-            lines.Add aName.name & "," & aName.RefersTo & "," & aName.comment
+            lines.Add aName.name & ";" & aName.RefersTo & ";" & aName.comment
         End If
     Next
     If lines.Count > 0 Then
