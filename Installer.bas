@@ -113,6 +113,8 @@ Sub AutoInstaller_step4()
     'Run the Workbook_Open macro from vbaDeveloper
     Application.Run "vbaDeveloper.xlam!Menu.createMenu"
     
+    Workbooks(addin_name & ".xlam").Save
+    
     MsgBox addin_name & " was successfully installed."
     
 End Sub
