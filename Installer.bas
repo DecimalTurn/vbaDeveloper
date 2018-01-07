@@ -1,5 +1,4 @@
 Attribute VB_Name = "Installer"
-
 Option Explicit
 
 '1) Create an Excel file called Installer.xlsm in same folder than Installer.bas:
@@ -24,7 +23,7 @@ Option Explicit
 
 '6) Make step 3a and 3b again for this file and run the sub testImport located in the module "Build".
 
-Public Const addin_name = "vbaDeveloper"
+Public Const TOOL_NAME = "vbaDeveloper"
 
 Sub AutoInstaller()
 
@@ -33,10 +32,10 @@ Sub AutoInstaller()
 End Sub
 Sub AutoInstaller_step0()
 
-    'Close the vbaDevelopper Workbook if already open and uninstall
+    'Close the vbaDevelopper Workbook if already open and uninstall from addins
     On Error Resume Next
-    Workbooks(addin_name & ".xlam").Close
-    Application.AddIns2(AddinName2index(addin_name & ".xlam")).Installed = False
+    Workbooks(TOOL_NAME & ".xlam").Close
+    Application.AddIns2(AddinName2index(TOOL_NAME & ".xlam")).Installed = False
     On Error GoTo 0
 
     Application.OnTime Now + TimeValue("00:00:06"), "AutoInstaller_step1"
@@ -59,7 +58,7 @@ strPathOfBuild = CurrentWB.Path & "\src\vbaDeveloper.xlam\Build.bas"
 NewWB.VBProject.VBComponents.Import strPathOfBuild
 
     'Rename the project (in the VBA) to vbaDeveloper
-    NewWB.VBProject.Name = addin_name
+    NewWB.VBProject.Name = TOOL_NAME
 
     'Add references to the library
         'Microsoft Scripting Runtime
@@ -73,14 +72,14 @@ NewWB.VBProject.VBComponents.Import strPathOfBuild
     'In VB Editor, menu File-->Save Book1; Save as vbaDeveloper.xlam in the same directory as 'src'
 
     strLocationXLAM = CurrentWB.Path
-    NewWB.SaveAs strLocationXLAM & "\" & addin_name & ".xlam", xlOpenXMLAddIn
+    NewWB.SaveAs strLocationXLAM & "\" & TOOL_NAME & ".xlam", xlOpenXMLAddIn
         
     'Close excel. Open excel with a new workbook, then open the just saved vbaDeveloper.xlam
     NewWB.Close savechanges:=False
     
     'Add the Add-in (if not already present)
-    If IsAddinInstalled(addin_name) = False Then
-        Call Application.AddIns2.Add(strLocationXLAM & "\" & addin_name & ".xlam", CopyFile:=False)
+    If IsAddinInstalled(TOOL_NAME & ".xlam") = False Then
+        Call Application.AddIns2.Add(strLocationXLAM & "\" & TOOL_NAME & ".xlam", CopyFile:=False)
     End If
     
     'Continue to step 2
@@ -91,7 +90,7 @@ End Sub
 Sub AutoInstaller_step2()
 
     'Install the Addin (This should open the file)
-    Application.AddIns2(AddinName2index(addin_name & ".xlam")).Installed = True
+    Application.AddIns2(AddinName2index(TOOL_NAME & ".xlam")).Installed = True
     
     Application.OnTime Now + TimeValue("00:00:02"), "AutoInstaller_step3"
     
@@ -113,9 +112,9 @@ Sub AutoInstaller_step4()
     'Run the Workbook_Open macro from vbaDeveloper
     Application.Run "vbaDeveloper.xlam!Menu.createMenu"
     
-    Workbooks(addin_name & ".xlam").Save
+    Workbooks(TOOL_NAME & ".xlam").Save
     
-    MsgBox addin_name & " was successfully installed."
+    MsgBox TOOL_NAME & " was successfully installed."
     
 End Sub
 
@@ -140,3 +139,41 @@ Function AddinName2index(ByVal addin_name As String) As Integer
     'If we get to this line, it means no match was found
     AddinName2index = 0
 End Function
+
+Sub AutoAssembler()
+
+'Prepare variable
+Dim CurrentWB As Workbook, NewWB As Workbook
+
+Dim textline As String, strPathOfBuild As String, strLocationXLAM As String
+
+'Set the variables
+Set CurrentWB = ThisWorkbook
+Set NewWB = Workbooks.Add
+
+'Import code form Build.bas  to the new workbook
+strPathOfBuild = CurrentWB.Path & "\src\vbaDeveloper.xlam\Build.bas"
+NewWB.VBProject.VBComponents.Import strPathOfBuild
+
+    'Rename the project (in the VBA) to vbaDeveloper
+    NewWB.VBProject.Name = TOOL_NAME & "_pkg"
+
+    'Add references to the library
+        'Microsoft Scripting Runtime
+        NewWB.VBProject.References.AddFromGuid "{420B2830-E718-11CF-893D-00A0C9054228}", 1, 0
+        
+        'Microsoft Visual Basic for Applications Extensibility 5.3
+        NewWB.VBProject.References.AddFromGuid "{0002E157-0000-0000-C000-000000000046}", 5, 3
+    
+    'Save file as .xlsm
+    strLocationXLAM = CurrentWB.Path
+    NewWB.SaveAs strLocationXLAM & "\" & TOOL_NAME & "_pkg" & ".xlsm", xlOpenXMLWorkbookMacroEnabled
+        
+    'Close excel. Open excel with a new workbook, then open the just saved vbaDeveloper.xlsm
+    NewWB.Close savechanges:=False
+    
+    'Run the Build macro in vbaDeveloper
+    Application.Run "vbaDeveloper.xlsm!Build.testImport"
+    
+End Sub
+
