@@ -104,7 +104,7 @@ Sub test_rebuildXML()
 
 End Sub
 
-Public Sub rebuildXML(destinationFolder As String, containingFolderName As String, errorFlag As Boolean, errorMessage As String)
+Public Sub rebuildXML(destinationFolder As String, containingFolderName As String, errorFlag As Boolean, errorMessage As String, Optional ByRef NewWorkbook As Workbook)
 
     'input format cleanup - containing folder name should not have trailing "\"
     containingFolderName = removeSlash(containingFolderName)
@@ -143,7 +143,12 @@ Public Sub rebuildXML(destinationFolder As String, containingFolderName As Strin
     'Rename the zipFileName to be the fileName (this effectively removes the zip file)
     Name zipFileName As fileName
     errorFlag = False
-
+    
+    'Open and pass the value of the workbook
+    If NewWorkbook Is Nothing Then
+        Set NewWorkbook = Workbooks.Open(fileName)
+    End If
+    
 End Sub
 
 
