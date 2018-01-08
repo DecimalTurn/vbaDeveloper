@@ -156,7 +156,7 @@ strPathOfBuild = CurrentWB.Path & "\src\vbaDeveloper.xlam\Build.bas"
 NewWB.VBProject.VBComponents.Import strPathOfBuild
 
     'Rename the project (in the VBA) to vbaDeveloper
-    NewWB.VBProject.Name = TOOL_NAME & "_pkg"
+    NewWB.VBProject.Name = TOOL_NAME
 
     'Add references to the library
         'Microsoft Scripting Runtime
@@ -165,15 +165,30 @@ NewWB.VBProject.VBComponents.Import strPathOfBuild
         'Microsoft Visual Basic for Applications Extensibility 5.3
         NewWB.VBProject.References.AddFromGuid "{0002E157-0000-0000-C000-000000000046}", 5, 3
     
-    'Save file as .xlsm
+    'In VB Editor, press F4, then under Microsoft Excel Objects, select ThisWorkbook.Set the property 'IsAddin' to TRUE
+    NewWB.IsAddin = True
+    'In VB Editor, menu File-->Save Book1; Save as vbaDeveloper.xlam in the same directory as 'src'
+    
+    'Save file as .xlam
     strLocationXLAM = CurrentWB.Path
-    NewWB.SaveAs strLocationXLAM & "\" & TOOL_NAME & "_pkg" & ".xlsm", xlOpenXMLWorkbookMacroEnabled
-        
-    'Close excel. Open excel with a new workbook, then open the just saved vbaDeveloper.xlsm
+    Application.DisplayAlerts = False
+    NewWB.SaveAs strLocationXLAM & "\" & TOOL_NAME & ".xlam", xlOpenXMLAddIn
+    Application.DisplayAlerts = True
+    
+    'Close and reopen the file
     NewWB.Close savechanges:=False
+    Set NewWB = Workbooks.Open(strLocationXLAM & "\" & TOOL_NAME & ".xlam")
+    
+    Application.Wait TimeSerial(Hour(Now()), Minute(Now()), Second(Now()) + 5)
     
     'Run the Build macro in vbaDeveloper
-    Application.Run "vbaDeveloper.xlsm!Build.testImport"
+    Application.OnTime Now + TimeValue("00:00:05"), "vbaDeveloper.xlam!Build.testImport"
+    Application.OnTime Now + TimeValue("00:00:12"), "installer.xls!SaveFile"
     
 End Sub
 
+Sub SaveFile()
+    Workbooks("vbaDeveloper.xlam").Save
+    ThisWorkbook.Saved = True
+    Application.Quit
+End Sub
