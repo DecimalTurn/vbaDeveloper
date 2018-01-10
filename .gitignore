@@ -4,5 +4,4 @@
 /*.xla
 /*.xls
 /*.log
-!Installer.xls
 src/vbaDeveloper.xlam/Sheet1.sheet.cls

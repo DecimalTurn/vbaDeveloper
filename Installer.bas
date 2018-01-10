@@ -90,7 +90,7 @@ Sub AutoInstaller_Generate_File(Optional RunNextStepOnTime As Boolean)
     NewWB.VBProject.VBComponents.Import strPathOfBuild
 
     'Rename the VBAProject to the tool name
-    NewWB.VBProject.name = SHORT_NAME
+    NewWB.VBProject.Name = SHORT_NAME
 
     'Add references to the requiered libraries
         'Microsoft Scripting Runtime
@@ -167,7 +167,7 @@ Function AddinName2index(ByVal addin_name As String) As Integer
 'PURPOSE: Convert the name of an installed addin to its index
     Dim i As Variant
     For i = 1 To Excel.Application.AddIns2.Count
-        If Excel.Application.AddIns2(i).name = addin_name Then
+        If Excel.Application.AddIns2(i).Name = addin_name Then
             AddinName2index = i
             Exit Function
         End If
