@@ -1,7 +1,7 @@
 Attribute VB_Name = "Installer"
 Option Explicit
 
-'1. Create an Excel file called Installer.xlsm (for example) in the same folder as Installer.bas:
+'1. Create an Excel file called Installer.xlsm (for example) in same folder than Installer.bas:
 '   *\vbaDeveloper-master\
 
 '2. Open the VB Editor (Alt+F11) right click on the Installer VB Project and choose Import a file and chose:
@@ -11,8 +11,8 @@ Option Explicit
 '       File -> Options -> Trust Center, Trust Center Settings, -> Macros,
 '       tick the box: 'Enable programatic access to VBA'  (In excel 2010: 'Trust access to the vba project object model')
 
-'4. Run AutoInstaller from the module Installer (Click somewhere inside the macro and press F5).
-'   Make sure to wait for the confirmation message at the end before doing anything with Excel.
+'4. Run AutoInstaller from the module Installer (Click somewhere inside the macro and press F5.
+'   Make sure to wait for confirmation message at the end before doing anything with Excel.
 
 Public Const SHORT_NAME = "vbaDeveloper"
 Public Const EXT = ".xlam"
@@ -69,7 +69,7 @@ Sub AutoInstaller_Generate_File(Optional RunNextStepOnTime As Boolean)
     'Test if this workbook has been saved
     Dim FileEverSaved As Boolean
     If ThisWorkbook.Path = "" Then
-        ErrMsg = "Please save the file that contains the Installer module in same folder than Installer.bas and try again"
+        ErrMsg = "Please save the file that contains the Installer module in the same folder than Installer.bas and try again"
         MsgBox ErrMsg, vbCritical
         Exit Sub
     End If
@@ -77,7 +77,7 @@ Sub AutoInstaller_Generate_File(Optional RunNextStepOnTime As Boolean)
     'Test if the src folder contains a folder with the right name
     Dim SourceFolderExist As Boolean
     If Dir(CurrentWB.Path & "\src\" & SHORT_NAME & EXT, vbDirectory) = "" Then
-        ErrMsg = "Make sure the you saved the file in a location where the source folder (src) contains a folder named " & SHORT_NAME
+        ErrMsg = "Please save the file that contains the Installer module in a location where the source folder (src) contains a folder named " & SHORT_NAME & EXT
         MsgBox ErrMsg, vbCritical
         Exit Sub
     End If
