@@ -13,7 +13,7 @@ Private Sub Workbook_Open()
     Debug.Print "vbaDeveloper thisWorkbook_open()"
     ' Set listener = New EventListener
     ' Set customAction = New MyCustomActions
-    Application.OnTime Now + TimeValue("00:00:01"), "Menu.createMenu"
+    Application.OnTime Now + TimeValue("00:00:01"), "Menu.refreshMenu" 'Wait 1 sec to make sure the ribbon changes register properly
     ' customAction.afterOpen
 End Sub
 
