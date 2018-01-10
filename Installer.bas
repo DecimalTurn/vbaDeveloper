@@ -1,7 +1,7 @@
 Attribute VB_Name = "Installer"
 Option Explicit
 
-'1. Create an Excel file called Installer.xlsm (for example) in same folder than Installer.bas:
+'1. Create an Excel file called Installer.xlsm (for example) in the same folder as Installer.bas:
 '   *\vbaDeveloper-master\
 
 '2. Open the VB Editor (Alt+F11) right click on the Installer VB Project and choose Import a file and chose:
@@ -11,8 +11,8 @@ Option Explicit
 '       File -> Options -> Trust Center, Trust Center Settings, -> Macros,
 '       tick the box: 'Enable programatic access to VBA'  (In excel 2010: 'Trust access to the vba project object model')
 
-'4. Run AutoInstaller from the module Installer (Click somewhere inside the macro and press F5.
-'   Make sure to wait for confirmation message at the end before doing anything with Excel.
+'4. Run AutoInstaller from the module Installer (Click somewhere inside the macro and press F5).
+'   Make sure to wait for the confirmation message at the end before doing anything with Excel.
 
 Public Const SHORT_NAME = "vbaDeveloper"
 Public Const EXT = ".xlam"
