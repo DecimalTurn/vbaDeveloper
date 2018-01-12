@@ -29,7 +29,7 @@ This repository does not contain the add-in itself which is an excel add-in in b
 
 Read the detailed instructions in Installer.bas.
    
-	**Manually**
+**Manually**
  1. Open a new workbook in excel, then open the VB editor (Alt+F11) and from the menu File->Import, import this file:
      * src/vbaDeveloper.xlam/Build.bas
  2. From tools references... add
